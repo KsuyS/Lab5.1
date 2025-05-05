@@ -1,8 +1,9 @@
 #pragma once
-
 #include <iomanip>
-#include <ostream>
+#include <iostream>
 #include <sstream>
+#include <stdexcept>
+#include <cstdint>
 
 enum class Month
 {
@@ -27,16 +28,15 @@ struct Date
 class CDate
 {
 public:
+
     CDate(unsigned day, Month month, unsigned year);
     explicit CDate(unsigned timestamp);
     CDate();
 
-    unsigned GetDay() const;
-    Month GetMonth() const;
-    unsigned GetYear() const;
-    WeekDay GetWeekDay() const;
-    bool IsValid() const;
-    Date FromDaysToDate() const;
+    unsigned GetDay()const;
+    Month GetMonth()const;
+    unsigned GetYear()const;
+    WeekDay GetWeekDay()const;
 
     CDate& operator++();
     CDate operator++(int);
@@ -47,6 +47,7 @@ public:
     int operator-(const CDate& other) const;
     CDate& operator+=(int days);
     CDate& operator-=(int days);
+
     bool operator==(const CDate& other) const;
     bool operator!=(const CDate& other) const;
     bool operator<(const CDate& other) const;
@@ -54,11 +55,10 @@ public:
     bool operator<=(const CDate& other) const;
     bool operator>=(const CDate& other) const;
 
-    static CDate Invalid();
+    Date FromDaysToDate() const;
 
 private:
     uint32_t m_daysFrom1970;
-    bool m_valid;
 
     static const unsigned MIN_YEAR = 1970;
     static const unsigned MAX_YEAR = 9999;
@@ -66,7 +66,7 @@ private:
     static const unsigned DAYS_IN_USUALLY_YEAR = 365;
 
     unsigned ToDays(unsigned day, Month month, unsigned year);
-    bool CheckValidity(const Date& date) const;
+    void CheckAndThrow(const Date& date) const;
     unsigned GetYearFromDays(unsigned days) const;
     void GetMonthAndDayFromDays(unsigned daysIntoYear, unsigned year, Month& outMonth, unsigned& outDay) const;
 
