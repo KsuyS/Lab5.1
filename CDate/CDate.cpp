@@ -2,14 +2,14 @@
 #include <stdexcept>
 #include <limits>
 
-CDate::CDate(unsigned day, Month month, unsigned year)
+CDate::CDate(unsigned day, Month month, unsigned year) // этот можно переиспользовать в следующем
 {
     Date date = { day, month, year };
     CheckAndThrow(date);
     m_daysFrom1970 = ToDays(day, month, year);
 }
 
-CDate::CDate(unsigned timestamp) : m_daysFrom1970(timestamp)
+CDate::CDate(unsigned timestamp) : m_daysFrom1970(timestamp) 
 {
     Date date = FromDaysToDate();
     CheckAndThrow(date);
@@ -36,6 +36,7 @@ WeekDay CDate::GetWeekDay() const
 {
     return static_cast<WeekDay>((static_cast<unsigned>(WeekDay::THURSDAY) + m_daysFrom1970) % DAYS_IN_WEEK);
 }
+
 
 CDate& CDate::operator++()
 {
@@ -161,7 +162,7 @@ std::istream& operator>>(std::istream& is, CDate& date)
     return is;
 }
 
-void CDate::CheckAndThrow(const Date& date) const
+void CDate::CheckAndThrow(const Date& date) const // название Assert
 {
     if (date.year < MIN_YEAR || date.year > MAX_YEAR)
         throw std::invalid_argument("Год вне допустимого диапазона");
@@ -192,7 +193,7 @@ Date CDate::FromDaysToDate() const
     return { day, month, year };
 }
 
-unsigned CDate::GetYearFromDays(unsigned days) const
+unsigned CDate::GetYearFromDays(unsigned days) const // упростить (без цикла по годам)
 {
     unsigned minYear = MIN_YEAR;
     unsigned maxYear = MAX_YEAR + 1;
@@ -208,13 +209,13 @@ unsigned CDate::GetYearFromDays(unsigned days) const
     return minYear - 1;
 }
 
-void CDate::GetMonthAndDayFromDays(unsigned daysIntoYear, unsigned year, Month& outMonth, unsigned& outDay) const
-{
+void CDate::GetMonthAndDayFromDays(unsigned daysIntoYear, unsigned year, Month& outMonth, unsigned& outDay) const 
+{ // упростить логику функции
     Month month = Month::JANUARY;
-    while (true)
+    while (true) // while с условием
     {
         unsigned daysInMon = DaysInMonth(month, year);
-        if (daysIntoYear < daysInMon)break;
+        if (daysIntoYear < daysInMon) break;
         daysIntoYear -= daysInMon;
         month = static_cast<Month>(static_cast<unsigned>(month) + 1);
     }
@@ -252,6 +253,7 @@ unsigned CDate::CountLeapYears(unsigned year)
     return year / 4 - year / 100 + year / 400;
 }
 
+// просчитать максимальный timestamp, избавиться от лишней функции
 unsigned CDate::DaysBeforeYear(unsigned year)
 {
     if (year <= MIN_YEAR) return 0;

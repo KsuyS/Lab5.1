@@ -58,9 +58,9 @@ public:
     Date FromDaysToDate() const;
 
 private:
-    uint32_t m_daysFrom1970;
+    uint32_t m_daysFrom1970; // timestamp
 
-    static const unsigned MIN_YEAR = 1970;
+    static const unsigned MIN_YEAR = 1970; // занести в cpp
     static const unsigned MAX_YEAR = 9999;
     static const unsigned DAYS_IN_WEEK = 7;
     static const unsigned DAYS_IN_USUALLY_YEAR = 365;
@@ -70,7 +70,7 @@ private:
     unsigned GetYearFromDays(unsigned days) const;
     void GetMonthAndDayFromDays(unsigned daysIntoYear, unsigned year, Month& outMonth, unsigned& outDay) const;
 
-    static bool IsLeapYear(unsigned year);
+    static bool IsLeapYear(unsigned year); // вынести в анонимный namespace
     static unsigned DaysInMonth(Month month, unsigned year);
     static unsigned CountLeapYears(unsigned year);
     static unsigned DaysBeforeYear(unsigned year);
